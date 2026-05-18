@@ -564,39 +564,53 @@
         <h2>⚡ О команде</h2>
         <div class="about-text">
             <p><strong>«Штормовые Охотники»</strong> — русскоязычное сообщество энтузиастов метеорологии, шторм-чейзеров и исследователей суровой погоды. Документируем грозы, торнадо, анализируем радары и модели. Команда поддерживает связь с американскими специалистами и развивает шторм-хантинг в России. Добро пожаловать в эпицентр стихии! 🌪️</p>
+            <p style="margin-top: 15px;">🔹 <strong>Наши задачи:</strong> сбор данных о мезоциклонах, анализ радарных снимков, популяризация метеорологии.</p>
+            <p>🔹 <strong>Опыт:</strong> выезды на суперячейки в Пермском крае, работа с CAPE/SRH, использование GR2Analyst и SHARPpy.</p>
         </div>
     </section>
 
     <section id="gallery" class="section">
         <h2>📸 Фотохроника</h2>
         <div id="galleryContainer" class="gallery-grid"></div>
+        <p style="margin-top: 20px; text-align: center; color: #8aaec0;">🌩️ Добавляйте свои снимки через админ-панель — поделитесь моментами охоты за штормами!</p>
     </section>
 
     <section id="news" class="section">
         <h2>📰 Новости команды</h2>
         <div id="newsContainer"></div>
+        <p style="margin-top: 20px; text-align: center; color: #8aaec0;">📢 Следите за обновлениями — новые выезды, отчёты и обучающие материалы.</p>
     </section>
 
     <section id="library" class="section">
         <h2>📚 Метеорологическая библиотека</h2>
         <div id="articlesContainer" class="articles-grid"></div>
+        <p style="margin-top: 20px; text-align: center; color: #8aaec0;">📖 Нажмите на карточку — откроется статья из Википедии или другого источника.</p>
     </section>
 
     <section id="map" class="section">
         <h2>🗺️ Карта выездов</h2>
         <div class="map-placeholder">
-            🌍 Здесь будет интерактивная карта с отметками мест наблюдений (интеграция Яндекс.Карт или Leaflet в будущем).<br>
-            Пока что добавляйте координаты в админ‑панели (в разработке).
+            🌍 <strong>Интерактивная карта в разработке</strong><br><br>
+            🗺️ Планируется интеграция с Яндекс.Картами или Leaflet.<br>
+            🧭 Пока что можно добавлять координаты в админ‑панели (поле для будущих меток).<br>
+            📍 Точки выездов: Кунгур, Пермь, Екатеринбург, Казань (2024-2025 гг.)
         </div>
+        <p style="margin-top: 15px; text-align: center; color: #8aaec0;">Скоро здесь появится карта с отметками мест наблюдений суперъячеек.</p>
     </section>
 
     <section id="contacts" class="section">
         <h2>🌐 Контакты и соцсети</h2>
         <div id="socialLinksContainer" class="social-links"></div>
-        <p style="margin-top: 25px;">🇷🇺 Сотрудничество, съемки, метеоконсультации — пишите!</p>
+        <div style="margin-top: 30px; background: #07121c; border-radius: 24px; padding: 20px;">
+            <h3 style="color: #ffb347;">📬 Связаться с нами</h3>
+            <p>По вопросам сотрудничества, съёмок или метеоконсультаций:</p>
+            <p>✉️ <strong>stormhunters@example.com</strong> (замените на реальный при публикации)</p>
+            <p>💬 Telegram-чат для оперативного общения.</p>
+        </div>
+        <p style="margin-top: 25px;">🇷🇺 Присоединяйтесь к сообществу шторм-чейзеров России!</p>
     </section>
     
-    <footer>© 2025 Штормовые Охотники | Storm Hunters Team</footer>
+    <footer>© 2025 Штормовые Охотники | Storm Hunters Team | Всегда на передовой стихии</footer>
 </div>
 
 <!-- Окно ввода пароля -->
@@ -665,7 +679,7 @@
         logo: "",
         gallery: [],
         news: [],
-        articles: [],   // { title, desc, url }
+        articles: [],
         links: { tgChannel: "https://t.me/storm_hunters_ru", tgChat: "https://t.me/your_storm_hunter", youtube: "https://youtube.com/@stormhunters", email: "stormhunters@example.com" }
     };
 
@@ -694,18 +708,23 @@
             teamData.gallery = [
                 { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Supercell_Thunderstorm_Kansas.jpg/400px-Supercell_Thunderstorm_Kansas.jpg", caption: "Суперячейка, Канзас", comments: [] },
                 { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Storm_over_El_Ranchito.jpg/400px-Storm_over_El_Ranchito.jpg", caption: "Грозовой вал", comments: [] },
-                { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Lightning_over_Lake_Underhill.jpg/400px-Lightning_over_Lake_Underhill.jpg", caption: "Молния над озером", comments: [] }
+                { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Lightning_over_Lake_Underhill.jpg/400px-Lightning_over_Lake_Underhill.jpg", caption: "Молния над озером", comments: [] },
+                { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/May_3_1999_Oklahoma_tornado_radar_screenshot.gif/400px-May_3_1999_Oklahoma_tornado_radar_screenshot.gif", caption: "Радар, торнадо Оклахома", comments: [] }
             ];
         }
         if (!teamData.news.length) {
-            teamData.news = [{ title: "Первый выезд сезона", text: "Зафиксировали мощный суперячейковый комплекс в Пермском крае.", date: new Date().toLocaleString() }];
+            teamData.news = [
+                { title: "Первый выезд сезона", text: "Зафиксировали мощный суперячейковый комплекс в Пермском крае. CAPE превысил 2500 Дж/кг.", date: new Date().toLocaleString() },
+                { title: "Новый анализ GR2Analyst", text: "Освоили работу с доплеровским радаром — научились выявлять мезоциклоны.", date: new Date().toLocaleString() }
+            ];
         }
         if (!teamData.articles.length) {
             teamData.articles = [
                 { title: "CAPE (Convective Available Potential Energy)", desc: "Энергия конвекции – ключевой параметр для гроз.", url: "https://ru.wikipedia.org/wiki/CAPE" },
                 { title: "SRH (Storm Relative Helicity)", desc: "Спиральность – мера вращения в шторме.", url: "https://en.wikipedia.org/wiki/Storm_Relative_Helicity" },
                 { title: "Суперячейка", desc: "Особо организованное грозовое облако.", url: "https://ru.wikipedia.org/wiki/%D0%A1%D1%83%D0%BF%D0%B5%D1%80%D1%8F%D1%87%D0%B5%D0%B9%D0%BA%D0%B0" },
-                { title: "Торнадо", desc: "Разрушительный атмосферный вихрь.", url: "https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80%D0%BD%D0%B0%D0%B4%D0%BE" }
+                { title: "Торнадо", desc: "Разрушительный атмосферный вихрь.", url: "https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80%D0%BD%D0%B0%D0%B4%D0%BE" },
+                { title: "Мезоциклон", desc: "Вращающийся восходящий поток в суперячейке.", url: "https://ru.wikipedia.org/wiki/%D0%9C%D0%B5%D0%B7%D0%BE%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%BD" }
             ];
         }
         renderUI();
@@ -736,7 +755,7 @@
                 `).join('') + `</div>`;
             }
             card.innerHTML = `
-                <img class="gallery-img" src="${item.src}" onerror="this.src='https://placehold.co/400x220?text=Error'">
+                <img class="gallery-img" src="${item.src}" onerror="this.src='https://placehold.co/400x220?text=Image+not+found'">
                 <div class="card-caption">${escapeHtml(item.caption)}<button class="delete-photo" data-idx="${idx}">🗑️ Удалить фото</button></div>
                 ${commentsHtml}
                 <div class="comments-section">
@@ -751,14 +770,12 @@
             `;
             galleryDiv.appendChild(card);
         });
-        // удаление фото
         document.querySelectorAll(".delete-photo").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 let idx = parseInt(btn.dataset.idx);
                 if (confirm("Удалить фото?")) { teamData.gallery.splice(idx, 1); persistData(); renderUI(); }
             });
         });
-        // добавление комментария
         document.querySelectorAll(".add-comment-btn").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 let idx = parseInt(btn.dataset.idx);
@@ -774,7 +791,6 @@
                 renderUI();
             });
         });
-        // удаление комментария
         document.querySelectorAll(".delete-comment").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 let gIdx = parseInt(btn.dataset.galleryIdx);
@@ -848,7 +864,6 @@
             <a href="mailto:${escapeHtml(teamData.links.email)}" class="social-btn">✉️ Почта</a>
         `;
         document.getElementById("navTelegramLink").href = teamData.links.tgChannel;
-        // заполнение админки
         document.getElementById("tgChannelLink").value = teamData.links.tgChannel;
         document.getElementById("tgChatLink").value = teamData.links.tgChat;
         document.getElementById("youtubeLink").value = teamData.links.youtube;
