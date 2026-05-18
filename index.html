@@ -111,12 +111,8 @@
             transition: 0.2s;
             cursor: pointer;
         }
-        .nav a:hover {
+        .nav a:hover, .nav a.active {
             background: #2c5a7a;
-            color: white;
-        }
-        .nav .active {
-            background: #3b6e9e;
             color: white;
         }
 
@@ -203,28 +199,47 @@
             border-bottom: 1px dashed #2a4a6e;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .comment-author {
+            font-weight: bold;
+            color: #ffb347;
+            min-width: 80px;
         }
         .comment-text {
             color: #bdd4ff;
+            flex: 1;
         }
         .comment-date {
             font-size: 0.7rem;
             color: #6c8faa;
+            white-space: nowrap;
         }
         .add-comment {
             display: flex;
+            flex-direction: column;
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 12px;
         }
-        .add-comment input {
+        .comment-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .comment-input-row input, .comment-input-row textarea {
             flex: 1;
             background: #0b1620;
             border: 1px solid #3e6a8c;
-            padding: 6px 10px;
+            padding: 8px 10px;
             border-radius: 20px;
             color: white;
             font-size: 0.8rem;
+        }
+        .comment-input-row textarea {
+            min-width: 200px;
+            resize: vertical;
         }
         .add-comment button {
             background: #2a5778;
@@ -264,6 +279,25 @@
         }
         .news-text {
             margin-top: 10px;
+        }
+        .delete-news {
+            background: #5a2a2a;
+            color: #ffaeae;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        /* Карта выездов (простая заглушка) */
+        .map-placeholder {
+            background: #0a111c;
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #3e6a8c;
         }
 
         .admin-overlay {
@@ -384,10 +418,11 @@
         <button class="admin-btn" id="openAdminBtn">⚙️ Админ панель</button>
     </div>
     
-    <div class="nav">
+    <div class="nav" id="navTabs">
         <a data-tab="about">🏠 Главная</a>
         <a data-tab="gallery">📸 Галерея</a>
         <a data-tab="news">📰 Новости</a>
+        <a data-tab="map">🗺️ Выезды</a>
         <a data-tab="contacts">📞 Контакты</a>
         <a id="navTelegramLink" href="https://t.me/storm_hunters_ru" target="_blank">✈️ Telegram</a>
     </div>
@@ -409,6 +444,14 @@
         <div id="newsContainer"></div>
     </section>
 
+    <section id="map" class="section">
+        <h2>🗺️ Карта выездов</h2>
+        <div class="map-placeholder">
+            🌍 Здесь будет интерактивная карта с отметками мест наблюдений (интеграция Яндекс.Карт или Leaflet в будущем).<br>
+            Пока что добавляйте координаты в админ‑панели (в разработке).
+        </div>
+    </section>
+
     <section id="contacts" class="section">
         <h2>🌐 Контакты и соцсети</h2>
         <div id="socialLinksContainer" class="social-links"></div>
@@ -421,10 +464,10 @@
 <!-- Админ панель -->
 <div id="adminOverlay" class="admin-overlay">
     <div class="admin-panel">
-        <h3>⚙️ Управление</h3>
+        <h3>⚙️ Управление контентом</h3>
         <label>📌 Логотип команды:</label>
         <input type="file" id="logoUpload" accept="image/*">
-        <label>🖼️ Добавить фото:</label>
+        <label>🖼️ Добавить фото в галерею:</label>
         <div class="drop-zone" id="dropZone">📂 Перетащите фото или нажмите<input type="file" id="photoUpload" multiple style="display:none"></div>
         <hr>
         <label>📰 Добавить новость:</label>
@@ -453,7 +496,7 @@
 <script>
     let teamData = {
         logo: "",
-        gallery: [],      // { src, caption, comments: [{text, date}] }
+        gallery: [],      // { src, caption, comments: [{author, text, date}] }
         news: [],         // { title, text, date }
         links: { tgChannel: "https://t.me/storm_hunters_ru", tgChat: "https://t.me/your_storm_hunter", youtube: "https://youtube.com/@stormhunters", email: "stormhunters@example.com" }
     };
@@ -508,11 +551,10 @@
             if (item.comments && item.comments.length) {
                 commentsHtml = `<div class="comments-section">` + item.comments.map((c, ci) => `
                     <div class="comment">
+                        <span class="comment-author">${escapeHtml(c.author || "Аноним")}:</span>
                         <span class="comment-text">${escapeHtml(c.text)}</span>
-                        <span style="display:flex; align-items:center;">
-                            <span class="comment-date">${c.date}</span>
-                            <button class="delete-comment" data-gallery-idx="${idx}" data-comment-idx="${ci}">🗑️</button>
-                        </span>
+                        <span class="comment-date">${c.date}</span>
+                        <button class="delete-comment" data-gallery-idx="${idx}" data-comment-idx="${ci}">🗑️</button>
                     </div>
                 `).join('') + `</div>`;
             }
@@ -522,8 +564,11 @@
                 ${commentsHtml}
                 <div class="comments-section">
                     <div class="add-comment">
-                        <input type="text" placeholder="Ваш комментарий..." id="commentInput_${idx}">
-                        <button class="add-comment-btn" data-idx="${idx}">💬</button>
+                        <div class="comment-input-row">
+                            <input type="text" placeholder="Ваше имя" id="commentAuthor_${idx}" value="Аноним" style="width:120px">
+                            <textarea rows="1" placeholder="Ваш комментарий..." id="commentText_${idx}"></textarea>
+                            <button class="add-comment-btn" data-idx="${idx}">💬 Отправить</button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -540,11 +585,14 @@
         document.querySelectorAll(".add-comment-btn").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 let idx = parseInt(btn.dataset.idx);
-                let input = document.getElementById(`commentInput_${idx}`);
-                let text = input.value.trim();
-                if (!text) return;
+                let authorInput = document.getElementById(`commentAuthor_${idx}`);
+                let textInput = document.getElementById(`commentText_${idx}`);
+                let author = authorInput.value.trim();
+                let text = textInput.value.trim();
+                if (!text) { showToast("Введите текст комментария", true); return; }
+                if (!author) author = "Аноним";
                 if (!teamData.gallery[idx].comments) teamData.gallery[idx].comments = [];
-                teamData.gallery[idx].comments.push({ text: text, date: new Date().toLocaleString() });
+                teamData.gallery[idx].comments.push({ author: author, text: text, date: new Date().toLocaleString() });
                 persistData();
                 renderUI();
             });
@@ -563,11 +611,26 @@
         // новости
         let newsDiv = document.getElementById("newsContainer");
         newsDiv.innerHTML = "";
-        teamData.news.slice().reverse().forEach(n => {
+        teamData.news.slice().reverse().forEach((n, idx) => {
             let div = document.createElement("div");
             div.className = "news-item";
-            div.innerHTML = `<div class="news-title">${escapeHtml(n.title)}</div><div class="news-date">${n.date}</div><div class="news-text">${escapeHtml(n.text)}</div>`;
+            div.innerHTML = `
+                <div class="news-title">${escapeHtml(n.title)}</div>
+                <div class="news-date">${n.date}</div>
+                <div class="news-text">${escapeHtml(n.text)}</div>
+                <button class="delete-news" data-news-idx="${teamData.news.length-1-idx}">🗑️ Удалить новость</button>
+            `;
             newsDiv.appendChild(div);
+        });
+        document.querySelectorAll(".delete-news").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                let idx = parseInt(btn.dataset.newsIdx);
+                if (confirm("Удалить новость?")) {
+                    teamData.news.splice(idx, 1);
+                    persistData();
+                    renderUI();
+                }
+            });
         });
 
         // соцсети
@@ -605,17 +668,20 @@
     }
 
     // Табы
-    document.querySelectorAll('.nav a[data-tab]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            let tab = btn.dataset.tab;
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
-            document.getElementById(tab).classList.add('active-section');
-            document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
-            btn.classList.add('active');
+    const sections = document.querySelectorAll('.section');
+    function showTab(tabId) {
+        sections.forEach(sec => sec.classList.remove('active-section'));
+        document.getElementById(tabId).classList.add('active-section');
+        document.querySelectorAll('#navTabs a[data-tab]').forEach(link => link.classList.remove('active'));
+        document.querySelector(`#navTabs a[data-tab="${tabId}"]`).classList.add('active');
+    }
+    document.querySelectorAll('#navTabs a[data-tab]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showTab(btn.dataset.tab);
         });
     });
-    document.getElementById("about").classList.add('active-section');
-    document.querySelector('.nav a[data-tab="about"]').classList.add('active');
+    showTab('about');
 
     // Админка
     const adminOverlay = document.getElementById("adminOverlay");
