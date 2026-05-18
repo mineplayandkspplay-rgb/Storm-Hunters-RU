@@ -60,7 +60,6 @@
         .logo-img {
             height: 70px;
             width: auto;
-            background: #1e2f3c;
             border-radius: 20px;
             padding: 5px 12px;
             object-fit: contain;
@@ -110,9 +109,14 @@
             padding: 6px 14px;
             border-radius: 30px;
             transition: 0.2s;
+            cursor: pointer;
         }
         .nav a:hover {
             background: #2c5a7a;
+            color: white;
+        }
+        .nav .active {
+            background: #3b6e9e;
             color: white;
         }
 
@@ -123,6 +127,10 @@
             padding: 30px 25px;
             margin-bottom: 45px;
             border: 1px solid rgba(70, 130, 200, 0.25);
+            display: none;
+        }
+        .section.active-section {
+            display: block;
         }
         h2 {
             font-size: 2rem;
@@ -138,8 +146,8 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
             margin-top: 20px;
         }
         .gallery-card {
@@ -167,6 +175,7 @@
             font-size: 0.9rem;
             color: #cbdbe6;
             text-align: center;
+            font-weight: bold;
         }
         .delete-photo {
             background: #5a2a2a;
@@ -177,11 +186,84 @@
             margin-top: 8px;
             cursor: pointer;
             font-size: 0.75rem;
-            transition: 0.1s;
+            width: 100%;
         }
         .delete-photo:hover {
             background: #a13333;
+        }
+        .comments-section {
+            padding: 12px;
+            background: #07121c;
+            border-top: 1px solid #2a4a6e;
+            margin-top: 8px;
+        }
+        .comment {
+            font-size: 0.8rem;
+            padding: 6px 0;
+            border-bottom: 1px dashed #2a4a6e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .comment-text {
+            color: #bdd4ff;
+        }
+        .comment-date {
+            font-size: 0.7rem;
+            color: #6c8faa;
+        }
+        .add-comment {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .add-comment input {
+            flex: 1;
+            background: #0b1620;
+            border: 1px solid #3e6a8c;
+            padding: 6px 10px;
+            border-radius: 20px;
             color: white;
+            font-size: 0.8rem;
+        }
+        .add-comment button {
+            background: #2a5778;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+        .delete-comment {
+            background: none;
+            border: none;
+            color: #b66;
+            cursor: pointer;
+            font-size: 0.7rem;
+            margin-left: 8px;
+        }
+
+        /* Новости */
+        .news-item {
+            background: #0e1822;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #2a4359;
+        }
+        .news-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ffb347;
+        }
+        .news-date {
+            font-size: 0.8rem;
+            color: #8aaec0;
+            margin: 5px 0;
+        }
+        .news-text {
+            margin-top: 10px;
         }
 
         .admin-overlay {
@@ -202,12 +284,13 @@
         }
         .admin-panel {
             background: #111c27;
-            max-width: 550px;
+            max-width: 650px;
             width: 90%;
             border-radius: 32px;
             padding: 30px;
             border: 1px solid #ffaa55;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .admin-panel h3 {
             font-size: 1.8rem;
@@ -218,8 +301,7 @@
             margin: 12px 0 4px 0;
             font-weight: 500;
         }
-        .admin-panel input, .admin-panel .input-field {
-            display: block;
+        .admin-panel input, .admin-panel textarea {
             width: 100%;
             background: #0b1620;
             border: 1px solid #3e6a8c;
@@ -228,29 +310,25 @@
             color: white;
             font-size: 0.9rem;
         }
-        .admin-panel input[type="file"] {
-            padding: 8px;
-        }
         .admin-buttons {
             display: flex;
             gap: 15px;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
-        .save-btn, .close-btn {
+        .save-btn, .close-btn, .export-btn, .clear-gallery-btn, .add-news-btn {
             padding: 10px 20px;
             border-radius: 40px;
             font-weight: bold;
             border: none;
             cursor: pointer;
         }
-        .save-btn {
-            background: #2d765c;
-            color: white;
-        }
-        .close-btn {
-            background: #4a2e2e;
-            color: #ffbcbc;
-        }
+        .save-btn { background: #2d765c; color: white; }
+        .close-btn { background: #4a2e2e; color: #ffbcbc; }
+        .export-btn { background: #2a5778; color: white; }
+        .clear-gallery-btn { background: #8b5a2b; color: white; }
+        .add-news-btn { background: #3b6e9e; color: white; }
+
         .social-links {
             display: flex;
             gap: 20px;
@@ -264,27 +342,35 @@
             text-decoration: none;
             color: #f0f9ff;
             font-weight: 600;
-            transition: 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
-        .social-btn:hover {
-            background: #3b6a8f;
-            transform: scale(1.02);
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2d2d2d;
+            padding: 10px 20px;
+            border-radius: 30px;
+            z-index: 1100;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
         }
-        footer {
+        hr { margin: 15px 0; border-color: #2a4a6e; }
+        .drop-zone {
+            border: 2px dashed #3e6a8c;
+            border-radius: 28px;
+            padding: 20px;
             text-align: center;
-            padding: 25px;
-            color: #8aaec0;
-            font-size: 0.8rem;
+            margin: 10px 0;
+            background: #0b162066;
         }
         @media (max-width: 680px) {
             .container { padding: 12px; }
             .team-name { font-size: 1.3rem; }
         }
-        button, input, .admin-btn { cursor: pointer; }
-        hr { margin: 15px 0; border-color: #2a4a6e; }
     </style>
 </head>
 <body>
@@ -299,273 +385,285 @@
     </div>
     
     <div class="nav">
-        <a href="#">🏠 Главная</a>
-        <a href="#gallery">📸 Галерея</a>
-        <a href="#contacts">📞 Контакты</a>
-        <a id="navTelegramLink" href="https://t.me/storm_hunters_ru" target="_blank">✈️ Telegram канал</a>
+        <a data-tab="about">🏠 Главная</a>
+        <a data-tab="gallery">📸 Галерея</a>
+        <a data-tab="news">📰 Новости</a>
+        <a data-tab="contacts">📞 Контакты</a>
+        <a id="navTelegramLink" href="https://t.me/storm_hunters_ru" target="_blank">✈️ Telegram</a>
     </div>
 
-    <section class="section" id="about">
+    <section id="about" class="section">
         <h2>⚡ О команде</h2>
         <div class="about-text">
-            <p><strong>«Штормовые Охотники»</strong> — русскоязычное сообщество энтузиастов метеорологии, шторм-чейзеров и исследователей суровой погоды. Мы документируем грозы, торнадо, шквалы, анализируем данные радаров, моделей CAPE/SRH и делимся реальными наблюдениями. Команда поддерживает связь с американскими специалистами и развивает шторм-хантинг в России. Добро пожаловать в эпицентр стихии! 🌪️</p>
+            <p><strong>«Штормовые Охотники»</strong> — русскоязычное сообщество энтузиастов метеорологии, шторм-чейзеров и исследователей суровой погоды. Документируем грозы, торнадо, анализируем радары и модели. Команда поддерживает связь с американскими специалистами и развивает шторм-хантинг в России. Добро пожаловать в эпицентр стихии! 🌪️</p>
         </div>
     </section>
 
-    <section class="section" id="gallery">
+    <section id="gallery" class="section">
         <h2>📸 Фотохроника</h2>
         <div id="galleryContainer" class="gallery-grid"></div>
     </section>
 
-    <section class="section" id="contacts">
+    <section id="news" class="section">
+        <h2>📰 Новости команды</h2>
+        <div id="newsContainer"></div>
+    </section>
+
+    <section id="contacts" class="section">
         <h2>🌐 Контакты и соцсети</h2>
-        <div id="socialLinksContainer" class="social-links">
-            <!-- динамические ссылки из localStorage -->
-        </div>
+        <div id="socialLinksContainer" class="social-links"></div>
         <p style="margin-top: 25px;">🇷🇺 Сотрудничество, съемки, метеоконсультации — пишите!</p>
     </section>
     
-    <footer>
-        © 2025 Штормовые Охотники | Storm Hunters Team | Всегда на передовой стихии
-    </footer>
+    <footer>© 2025 Штормовые Охотники | Storm Hunters Team</footer>
 </div>
 
 <!-- Админ панель -->
 <div id="adminOverlay" class="admin-overlay">
     <div class="admin-panel">
-        <h3>⚙️ Управление контентом</h3>
+        <h3>⚙️ Управление</h3>
         <label>📌 Логотип команды:</label>
-        <input type="file" id="logoUpload" accept="image/png, image/jpeg, image/svg+xml, image/webp">
-        
-        <label style="margin-top: 15px;">🖼️ Добавить фото в галерею:</label>
-        <input type="file" id="photoUpload" accept="image/*" multiple>
-        <div style="font-size: 0.8rem; opacity: 0.8;">* можно выбрать несколько фото сразу</div>
-        
+        <input type="file" id="logoUpload" accept="image/*">
+        <label>🖼️ Добавить фото:</label>
+        <div class="drop-zone" id="dropZone">📂 Перетащите фото или нажмите<input type="file" id="photoUpload" multiple style="display:none"></div>
         <hr>
-        <label>🔗 Ссылка Telegram (канал):</label>
-        <input type="url" id="tgChannelLink" placeholder="https://t.me/..." value="https://t.me/storm_hunters_ru">
-        
-        <label>👥 Telegram (чат):</label>
-        <input type="url" id="tgChatLink" placeholder="https://t.me/..." value="https://t.me/your_storm_hunter">
-        
-        <label>▶️ YouTube канал:</label>
-        <input type="url" id="youtubeLink" placeholder="https://youtube.com/..." value="https://youtube.com/@stormhunters">
-        
-        <label>✉️ Email для связи:</label>
-        <input type="email" id="emailLink" placeholder="mail@example.com" value="stormhunters@example.com">
-        
+        <label>📰 Добавить новость:</label>
+        <input type="text" id="newsTitle" placeholder="Заголовок">
+        <textarea id="newsText" rows="3" placeholder="Текст новости"></textarea>
+        <button id="addNewsBtn" class="add-news-btn">➕ Добавить новость</button>
+        <hr>
+        <label>🔗 Telegram канал:</label>
+        <input type="url" id="tgChannelLink">
+        <label>👥 Telegram чат:</label>
+        <input type="url" id="tgChatLink">
+        <label>▶️ YouTube:</label>
+        <input type="url" id="youtubeLink">
+        <label>✉️ Email:</label>
+        <input type="email" id="emailLink">
         <div class="admin-buttons">
             <button id="saveAdminBtn" class="save-btn">💾 Сохранить всё</button>
+            <button id="clearGalleryBtn" class="clear-gallery-btn">🗑️ Очистить галерею</button>
+            <button id="exportDataBtn" class="export-btn">📤 Экспорт</button>
             <button id="closeAdminBtn" class="close-btn">Закрыть</button>
         </div>
-        <p style="margin-top: 18px; font-size: 0.75rem;">Все данные (лого, фото, ссылки) хранятся в вашем браузере.</p>
     </div>
 </div>
+<div id="toast" class="toast"></div>
 
 <script>
-    // ======================== ХРАНИЛИЩЕ (LOCALSTORAGE) ========================
     let teamData = {
         logo: "",
-        gallery: [],
-        links: {
-            tgChannel: "https://t.me/storm_hunters_ru",
-            tgChat: "https://t.me/your_storm_hunter",
-            youtube: "https://youtube.com/@stormhunters",
-            email: "stormhunters@example.com"
-        }
+        gallery: [],      // { src, caption, comments: [{text, date}] }
+        news: [],         // { title, text, date }
+        links: { tgChannel: "https://t.me/storm_hunters_ru", tgChat: "https://t.me/your_storm_hunter", youtube: "https://youtube.com/@stormhunters", email: "stormhunters@example.com" }
     };
 
-    // Загружаем данные
+    function showToast(msg, isErr = false) {
+        let t = document.getElementById("toast");
+        t.textContent = msg;
+        t.style.backgroundColor = isErr ? "#8b3c3c" : "#2d765c";
+        t.style.opacity = "1";
+        setTimeout(() => t.style.opacity = "0", 2500);
+    }
+
     function loadData() {
-        const saved = localStorage.getItem("StormHuntersData");
+        let saved = localStorage.getItem("StormHuntersData");
         if (saved) {
             try {
-                const parsed = JSON.parse(saved);
-                teamData.logo = parsed.logo || "";
-                teamData.gallery = parsed.gallery || [];
-                if (parsed.links) teamData.links = parsed.links;
-            } catch(e) { console.warn(e); }
+                let p = JSON.parse(saved);
+                teamData.logo = p.logo || "";
+                teamData.gallery = p.gallery || [];
+                teamData.news = p.news || [];
+                if (p.links) teamData.links = p.links;
+            } catch(e) {}
         }
-        // Дефолтный лого
-        if (!teamData.logo) {
-            teamData.logo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%233b6e9e'/%3E%3Ctext x='50' y='67' font-size='44' text-anchor='middle' fill='white' font-weight='bold'%3E⛈%3C/text%3E%3C/svg%3E";
-        }
-        // Демо-галерея, если совсем пусто
-        if (teamData.gallery.length === 0) {
+        if (!teamData.logo) teamData.logo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%233b6e9e'/%3E%3Ctext x='50' y='67' font-size='44' text-anchor='middle' fill='white' font-weight='bold'%3E⛈%3C/text%3E%3C/svg%3E";
+        if (!teamData.gallery.length) {
             teamData.gallery = [
-                { src: "https://picsum.photos/id/15/400/250", caption: "Грозовой фронт, лето 2024" },
-                { src: "https://picsum.photos/id/29/400/250", caption: "Мезовартекс над полем" },
-                { src: "https://picsum.photos/id/34/400/250", caption: "Суперячейка, Пермский край" }
+                { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Supercell_Thunderstorm_Kansas.jpg/400px-Supercell_Thunderstorm_Kansas.jpg", caption: "Суперячейка, Канзас", comments: [] },
+                { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Storm_over_El_Ranchito.jpg/400px-Storm_over_El_Ranchito.jpg", caption: "Грозовой вал", comments: [] },
+                { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Lightning_over_Lake_Underhill.jpg/400px-Lightning_over_Lake_Underhill.jpg", caption: "Молния над озером", comments: [] }
             ];
+        }
+        if (!teamData.news.length) {
+            teamData.news = [{ title: "Первый выезд сезона", text: "Зафиксировали мощный суперячейковый комплекс в Пермском крае.", date: new Date().toLocaleString() }];
         }
         renderUI();
     }
 
     function persistData() {
-        localStorage.setItem("StormHuntersData", JSON.stringify({
-            logo: teamData.logo,
-            gallery: teamData.gallery,
-            links: teamData.links
-        }));
+        localStorage.setItem("StormHuntersData", JSON.stringify({ logo: teamData.logo, gallery: teamData.gallery, news: teamData.news, links: teamData.links }));
+        showToast("✅ Сохранено");
     }
 
-    // Обновление лого, галереи, ссылок на странице
     function renderUI() {
-        // лого
-        const logoImg = document.getElementById("teamLogo");
-        if (logoImg) logoImg.src = teamData.logo;
-        
+        document.getElementById("teamLogo").src = teamData.logo;
         // галерея
-        const galleryDiv = document.getElementById("galleryContainer");
-        if (galleryDiv) {
-            galleryDiv.innerHTML = "";
-            if (teamData.gallery.length === 0) {
-                galleryDiv.innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:40px;'>Пока нет фото, добавьте через админ-панель ⚡</div>";
-            } else {
-                teamData.gallery.forEach((item, idx) => {
-                    const card = document.createElement("div");
-                    card.className = "gallery-card";
-                    card.innerHTML = `
-                        <img class="gallery-img" src="${item.src}" alt="storm photo" loading="lazy">
-                        <div class="card-caption">
-                            ${item.caption || "Снимок охотника"}
-                            <button class="delete-photo" data-index="${idx}">🗑️ Удалить</button>
-                        </div>
-                    `;
-                    galleryDiv.appendChild(card);
-                });
-                document.querySelectorAll(".delete-photo").forEach(btn => {
-                    btn.addEventListener("click", (e) => {
-                        const index = parseInt(btn.getAttribute("data-index"));
-                        if (!isNaN(index) && confirm("Удалить фото из галереи?")) {
-                            teamData.gallery.splice(index, 1);
-                            persistData();
-                            renderUI();
-                        }
-                    });
-                });
+        let galleryDiv = document.getElementById("galleryContainer");
+        galleryDiv.innerHTML = "";
+        teamData.gallery.forEach((item, idx) => {
+            let card = document.createElement("div");
+            card.className = "gallery-card";
+            let commentsHtml = "";
+            if (item.comments && item.comments.length) {
+                commentsHtml = `<div class="comments-section">` + item.comments.map((c, ci) => `
+                    <div class="comment">
+                        <span class="comment-text">${escapeHtml(c.text)}</span>
+                        <span style="display:flex; align-items:center;">
+                            <span class="comment-date">${c.date}</span>
+                            <button class="delete-comment" data-gallery-idx="${idx}" data-comment-idx="${ci}">🗑️</button>
+                        </span>
+                    </div>
+                `).join('') + `</div>`;
             }
-        }
-        
-        // обновляем блок соцсетей
-        const socialContainer = document.getElementById("socialLinksContainer");
-        if (socialContainer) {
-            socialContainer.innerHTML = `
-                <a href="${teamData.links.tgChannel}" class="social-btn" target="_blank">📱 Telegram (канал)</a>
-                <a href="${teamData.links.tgChat}" class="social-btn" target="_blank">💬 Чат команды</a>
-                <a href="${teamData.links.youtube}" class="social-btn" target="_blank">▶️ YouTube канал</a>
-                <a href="mailto:${teamData.links.email}" class="social-btn">✉️ Почта</a>
+            card.innerHTML = `
+                <img class="gallery-img" src="${item.src}" onerror="this.src='https://placehold.co/400x220?text=Error'">
+                <div class="card-caption">${escapeHtml(item.caption)}<button class="delete-photo" data-idx="${idx}">🗑️ Удалить фото</button></div>
+                ${commentsHtml}
+                <div class="comments-section">
+                    <div class="add-comment">
+                        <input type="text" placeholder="Ваш комментарий..." id="commentInput_${idx}">
+                        <button class="add-comment-btn" data-idx="${idx}">💬</button>
+                    </div>
+                </div>
             `;
-        }
-        // обновляем ссылку в навигации
-        const navTg = document.getElementById("navTelegramLink");
-        if (navTg) navTg.href = teamData.links.tgChannel;
-        
-        // заполняем поля в админке текущими значениями (для удобства)
-        const tgChanInput = document.getElementById("tgChannelLink");
-        const tgChatInput = document.getElementById("tgChatLink");
-        const ytInput = document.getElementById("youtubeLink");
-        const emailInput = document.getElementById("emailLink");
-        if (tgChanInput) tgChanInput.value = teamData.links.tgChannel;
-        if (tgChatInput) tgChatInput.value = teamData.links.tgChat;
-        if (ytInput) ytInput.value = teamData.links.youtube;
-        if (emailInput) emailInput.value = teamData.links.email;
+            galleryDiv.appendChild(card);
+        });
+        // удаление фото
+        document.querySelectorAll(".delete-photo").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                let idx = parseInt(btn.dataset.idx);
+                if (confirm("Удалить фото?")) { teamData.gallery.splice(idx, 1); persistData(); renderUI(); }
+            });
+        });
+        // добавление комментария
+        document.querySelectorAll(".add-comment-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                let idx = parseInt(btn.dataset.idx);
+                let input = document.getElementById(`commentInput_${idx}`);
+                let text = input.value.trim();
+                if (!text) return;
+                if (!teamData.gallery[idx].comments) teamData.gallery[idx].comments = [];
+                teamData.gallery[idx].comments.push({ text: text, date: new Date().toLocaleString() });
+                persistData();
+                renderUI();
+            });
+        });
+        // удаление комментария
+        document.querySelectorAll(".delete-comment").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                let gIdx = parseInt(btn.dataset.galleryIdx);
+                let cIdx = parseInt(btn.dataset.commentIdx);
+                teamData.gallery[gIdx].comments.splice(cIdx, 1);
+                persistData();
+                renderUI();
+            });
+        });
+
+        // новости
+        let newsDiv = document.getElementById("newsContainer");
+        newsDiv.innerHTML = "";
+        teamData.news.slice().reverse().forEach(n => {
+            let div = document.createElement("div");
+            div.className = "news-item";
+            div.innerHTML = `<div class="news-title">${escapeHtml(n.title)}</div><div class="news-date">${n.date}</div><div class="news-text">${escapeHtml(n.text)}</div>`;
+            newsDiv.appendChild(div);
+        });
+
+        // соцсети
+        let social = document.getElementById("socialLinksContainer");
+        social.innerHTML = `
+            <a href="${escapeHtml(teamData.links.tgChannel)}" class="social-btn" target="_blank">📱 Telegram канал</a>
+            <a href="${escapeHtml(teamData.links.tgChat)}" class="social-btn" target="_blank">💬 Чат команды</a>
+            <a href="${escapeHtml(teamData.links.youtube)}" class="social-btn" target="_blank">▶️ YouTube</a>
+            <a href="mailto:${escapeHtml(teamData.links.email)}" class="social-btn">✉️ Почта</a>
+        `;
+        document.getElementById("navTelegramLink").href = teamData.links.tgChannel;
+        // заполнение админки
+        document.getElementById("tgChannelLink").value = teamData.links.tgChannel;
+        document.getElementById("tgChatLink").value = teamData.links.tgChat;
+        document.getElementById("youtubeLink").value = teamData.links.youtube;
+        document.getElementById("emailLink").value = teamData.links.email;
     }
 
-    // helpers для base64
-    function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    }
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m; }); }
+
+    function fileToBase64(file) { return new Promise((resolve, reject) => { if(file.size>5*1024*1024) reject("Слишком большой"); let r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
 
     async function addPhotos(files) {
-        for (let file of files) {
-            if (!file.type.startsWith("image/")) continue;
-            const base64 = await fileToBase64(file);
-            const caption = `${file.name} (${new Date().toLocaleString()})`;
-            teamData.gallery.unshift({ src: base64, caption: caption });
+        for(let f of files) {
+            if(!f.type.startsWith("image/")) continue;
+            let b64 = await fileToBase64(f);
+            teamData.gallery.unshift({ src: b64, caption: f.name + " ("+new Date().toLocaleString()+")", comments: [] });
         }
-        persistData();
-        renderUI();
+        persistData(); renderUI();
     }
 
     async function changeLogo(file) {
-        if (file && file.type.startsWith("image/")) {
-            const base64 = await fileToBase64(file);
-            teamData.logo = base64;
-            persistData();
-            renderUI();
-        }
+        let b64 = await fileToBase64(file);
+        teamData.logo = b64; persistData(); renderUI();
     }
 
-    // ---------- Админ панель ----------
-    const adminOverlay = document.getElementById("adminOverlay");
-    const openBtn = document.getElementById("openAdminBtn");
-    const closeBtn = document.getElementById("closeAdminBtn");
-    const saveAdmin = document.getElementById("saveAdminBtn");
-    const logoUpload = document.getElementById("logoUpload");
-    const photoUpload = document.getElementById("photoUpload");
-    const tgChanInput = document.getElementById("tgChannelLink");
-    const tgChatInput = document.getElementById("tgChatLink");
-    const ytInput = document.getElementById("youtubeLink");
-    const emailInput = document.getElementById("emailLink");
-
-    openBtn.addEventListener("click", () => {
-        adminOverlay.style.visibility = "visible";
-        adminOverlay.style.opacity = "1";
-        logoUpload.value = "";
-        photoUpload.value = "";
-    });
-
-    function closeAdmin() {
-        adminOverlay.style.visibility = "hidden";
-        adminOverlay.style.opacity = "0";
-    }
-    closeBtn.addEventListener("click", closeAdmin);
-    
-    saveAdmin.addEventListener("click", async () => {
-        // лого
-        if (logoUpload.files.length > 0) {
-            await changeLogo(logoUpload.files[0]);
-        }
-        // фото
-        if (photoUpload.files.length > 0) {
-            await addPhotos(Array.from(photoUpload.files));
-        }
-        // обновляем ссылки
-        if (tgChanInput.value) teamData.links.tgChannel = tgChanInput.value;
-        if (tgChatInput.value) teamData.links.tgChat = tgChatInput.value;
-        if (ytInput.value) teamData.links.youtube = ytInput.value;
-        if (emailInput.value) teamData.links.email = emailInput.value;
-        
-        persistData();
-        renderUI(); // перерисовываем соцблок и навигацию
-        closeAdmin();
-        alert("✅ Все данные обновлены (лого, фото, ссылки)! Сохранено в браузере.");
-    });
-
-    adminOverlay.addEventListener("click", (e) => {
-        if (e.target === adminOverlay) closeAdmin();
-    });
-
-    loadData();
-    
-    // плавный скролл
-    document.querySelectorAll('.nav a').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const hash = this.getAttribute('href');
-            if (hash && hash.startsWith('#')) {
-                e.preventDefault();
-                const targetId = hash.substring(1);
-                const target = document.getElementById(targetId);
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            }
+    // Табы
+    document.querySelectorAll('.nav a[data-tab]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            let tab = btn.dataset.tab;
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+            document.getElementById(tab).classList.add('active-section');
+            document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+            btn.classList.add('active');
         });
     });
+    document.getElementById("about").classList.add('active-section');
+    document.querySelector('.nav a[data-tab="about"]').classList.add('active');
+
+    // Админка
+    const adminOverlay = document.getElementById("adminOverlay");
+    document.getElementById("openAdminBtn").onclick = () => { adminOverlay.style.visibility = "visible"; adminOverlay.style.opacity = "1"; };
+    document.getElementById("closeAdminBtn").onclick = () => { adminOverlay.style.visibility = "hidden"; adminOverlay.style.opacity = "0"; };
+    document.getElementById("saveAdminBtn").onclick = async () => {
+        let logoF = document.getElementById("logoUpload").files[0];
+        if(logoF) await changeLogo(logoF);
+        let photos = document.getElementById("photoUpload").files;
+        if(photos.length) await addPhotos(Array.from(photos));
+        teamData.links.tgChannel = document.getElementById("tgChannelLink").value;
+        teamData.links.tgChat = document.getElementById("tgChatLink").value;
+        teamData.links.youtube = document.getElementById("youtubeLink").value;
+        teamData.links.email = document.getElementById("emailLink").value;
+        persistData(); renderUI(); adminOverlay.style.visibility = "hidden";
+    };
+    document.getElementById("clearGalleryBtn").onclick = () => { if(confirm("Очистить всю галерею?")) { teamData.gallery = []; persistData(); renderUI(); } };
+    document.getElementById("exportDataBtn").onclick = () => {
+        let dataStr = JSON.stringify(teamData, null, 2);
+        let blob = new Blob([dataStr], {type:"application/json"});
+        let a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="stormhunters_backup.json"; a.click(); URL.revokeObjectURL(blob);
+    };
+    document.getElementById("addNewsBtn").onclick = () => {
+        let title = document.getElementById("newsTitle").value.trim();
+        let text = document.getElementById("newsText").value.trim();
+        if(!title || !text) { showToast("Заполните заголовок и текст", true); return; }
+        teamData.news.unshift({ title: title, text: text, date: new Date().toLocaleString() });
+        persistData(); renderUI();
+        document.getElementById("newsTitle").value = "";
+        document.getElementById("newsText").value = "";
+        showToast("Новость добавлена");
+    };
+
+    // Drag & drop
+    let dropZone = document.getElementById("dropZone");
+    let photoUpload = document.getElementById("photoUpload");
+    dropZone.addEventListener("click", () => photoUpload.click());
+    dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.style.borderColor="#ffaa44"; });
+    dropZone.addEventListener("dragleave", () => dropZone.style.borderColor="#3e6a8c");
+    dropZone.addEventListener("drop", async (e) => {
+        e.preventDefault(); dropZone.style.borderColor="#3e6a8c";
+        let files = Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith("image/"));
+        if(files.length) await addPhotos(files);
+        else showToast("Перетащите изображения", true);
+    });
+    photoUpload.addEventListener("change", async () => { if(photoUpload.files.length) await addPhotos(Array.from(photoUpload.files)); photoUpload.value=""; });
+
+    loadData();
 </script>
 </body>
 </html>
